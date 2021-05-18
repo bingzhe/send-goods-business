@@ -8,6 +8,7 @@ import Footer from '@/components/Footer';
 import type { ResponseError } from 'umi-request';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
+import { getHomeData } from './services/api';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -23,6 +24,7 @@ export const initialStateConfig = {
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
   currentUser?: API.CurrentUser;
+  homeData?: API.HomeData;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
   const fetchUserInfo = async () => {
@@ -37,9 +39,12 @@ export async function getInitialState(): Promise<{
   // 如果是登录页面，不执行
   if (history.location.pathname !== loginPath) {
     const currentUser = await fetchUserInfo();
+    const homeData = await getHomeData();
+
     return {
       fetchUserInfo,
       currentUser,
+      homeData,
       settings: {},
     };
   }
@@ -76,6 +81,7 @@ export const request: RequestConfig = {
     const { messages } = getIntl(getLocale());
     const { response } = error;
 
+    console.log(response, messages);
     if (response && response.status) {
       const { status, statusText, url } = response;
       const requestErrorMessage = messages['app.request.error'];
