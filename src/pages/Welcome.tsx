@@ -3,7 +3,6 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { Card, Alert, Typography } from 'antd';
 import { useIntl, FormattedMessage } from 'umi';
 import styles from './Welcome.less';
-import { EncSubmit } from '../services/encsubmit';
 
 const CodePreview: React.FC = ({ children }) => (
   <pre className={styles.pre}>
@@ -15,13 +14,6 @@ const CodePreview: React.FC = ({ children }) => (
 
 export default (): React.ReactNode => {
   const intl = useIntl();
-
-  async function t() {
-    const resp = await EncSubmit('/php/goods_get.php', { opr: 'get_goods_list', page_no: 1 });
-
-    console.log(resp);
-  }
-  t();
 
   return (
     <PageContainer>
@@ -67,6 +59,7 @@ export default (): React.ReactNode => {
         </Typography.Text>
         <CodePreview>yarn add @ant-design/pro-layout</CodePreview>
       </Card>
+      <div>welcome welcome welcome</div>
     </PageContainer>
   );
 };

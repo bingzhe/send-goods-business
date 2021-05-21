@@ -4,7 +4,7 @@ import { Card, Typography, Alert } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { useIntl } from 'umi';
 
-export default (): React.ReactNode => {
+export default (props): React.ReactNode => {
   const intl = useIntl();
   return (
     <PageHeaderWrapper
@@ -38,6 +38,8 @@ export default (): React.ReactNode => {
         </a>
         。
       </p>
+      <div>adminadminadminadmiadnadadafadf</div>
+      <div>{props.children}</div>
     </PageHeaderWrapper>
   );
 };

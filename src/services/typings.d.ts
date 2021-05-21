@@ -59,7 +59,7 @@ declare namespace API {
       };
       buycart_id: string; // 当前用户的购物车（用于拉取购物车数据）（注：从购物车下单成功后，会清除此字段）
       raw_material_list: string[]; // 手机壳材质列表
-      phone_brand_list: PhoneModel[]; // 手机品牌、型号列表
+      phone_brand_list: PhoneBrand[]; // 手机品牌、型号列表
       theme_list: string[]; // 主题列表
       delivery_list: DeliveryItem[]; // 物流公司及快递费列表
       input_account_list: InputAccountItem[]; // 工厂收款账户列表
@@ -71,5 +71,32 @@ declare namespace API {
       task_status_list: TaskStatusItem[];
     };
     ret: number;
+  };
+
+  type GoodsItem = {
+    attach_list_str: string;
+    brand: string;
+    brand_txt: string;
+    factory_id: string;
+    goods_id: string;
+    goods_name: string;
+    inventory: number;
+    model: string;
+    model_txt: string;
+    price: number;
+    raw_material: string;
+    sku_list_str: string;
+    status: number;
+    type: number;
+    type_txt: string;
+  };
+
+  type GoodsListResp = {
+    data: {
+      list: GoodsItem[];
+      page_no: number;
+      page_size: number;
+      total: number;
+    };
   };
 }

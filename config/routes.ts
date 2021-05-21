@@ -16,6 +16,19 @@
     ],
   },
   {
+    path: '/goods',
+    name: 'goods',
+    icon: 'smile',
+    routes: [
+      {
+        path: '/goods/list',
+        name: 'goods-list',
+        icon: 'smile',
+        component: './goods/index.tsx',
+      },
+    ],
+  },
+  {
     path: '/welcome',
     name: 'welcome',
     icon: 'smile',
