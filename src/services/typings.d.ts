@@ -91,6 +91,18 @@ declare namespace API {
     type_txt: string;
   };
 
+  type GoodsListParam = {
+    opr: string;
+    page_no: number;
+    goods_material?: string;
+    type?: number;
+    brand?: string;
+    model?: string;
+    goods_name?: string;
+    goods_id?: string;
+    color_name?: string;
+  };
+
   type GoodsListResp = {
     data: {
       list: GoodsItem[];

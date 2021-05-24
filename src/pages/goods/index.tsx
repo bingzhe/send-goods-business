@@ -6,15 +6,20 @@ import { getGoodsList } from '../../services/api';
 import { Select } from 'antd';
 import { useModel } from 'umi';
 
-async function fetchGoodsList(params, sort, filter) {
-  console.log({ params });
-  console.log({ sort });
-  console.log({ filter });
+async function fetchGoodsList(params: any) {
+  const { current, pageSize, ...rest } = params;
 
-  const resp = await getGoodsList();
+  const data = {
+    opr: 'get_goods_list',
+    page_no: current,
+    page_size: pageSize,
+    ...rest,
+  };
+
+  const resp = await getGoodsList(data);
 
   const { list, total } = resp.data;
-  console.log(resp);
+  // console.log(resp);
   return {
     data: list,
     total,
@@ -26,9 +31,6 @@ const GoodsList: React.FC = () => {
 
   const [materialOptions, setMaterialOptions] = React.useState<SelectOptions>([]);
   const [brandOptions, setBrandOptions] = React.useState<SelectOptions>([]);
-  const [modelOptions, setModelOptions] = React.useState<SelectOptions>([]);
-
-  const [selectBrand] = React.useState<string>('');
 
   const { initialState } = useModel('@@initialState');
   const homeData = initialState?.homeData?.data;
@@ -45,21 +47,6 @@ const GoodsList: React.FC = () => {
       })),
     );
   }, [homeData]);
-
-  React.useEffect(() => {
-    const phone_brand_list = homeData?.phone_brand_list || [];
-    const selectBrandModel =
-      phone_brand_list.filter((item) => item.brand_id === selectBrand)[0] || {};
-
-    setModelOptions(
-      (selectBrandModel.model_list || []).map((item) => {
-        return {
-          label: item.model_name,
-          value: item.model_id,
-        };
-      }),
-    );
-  }, [homeData, selectBrand]);
 
   const columns: ProColumns<API.GoodsItem>[] = [
     {
@@ -81,21 +68,14 @@ const GoodsList: React.FC = () => {
       hideInTable: true,
       renderFormItem: (item, { type, defaultRender, ...rest }) => {
         if (type === 'form') return null;
+
         return <Select options={brandOptions} {...rest} />;
       },
     },
     {
       title: '型号',
-      dataIndex: 'brand',
+      dataIndex: 'model',
       hideInTable: true,
-      renderFormItem: (item, { type, defaultRender, ...rest }) => {
-        if (type === 'form') return null;
-        // const brand = form.getFieldValue('brand');
-
-        // setSelectBrand(brand);
-
-        return <Select options={modelOptions} {...rest} />;
-      },
     },
     {
       title: '商品编号',
@@ -116,11 +96,22 @@ const GoodsList: React.FC = () => {
       valueEnum: { 1: 'DIY', 2: '标品', 3: '礼品' },
       dataIndex: 'type',
     },
+    {
+      title: '颜色',
+      dataIndex: 'color_name',
+      hideInTable: true,
+    },
   ];
 
   return (
     <PageContainer>
-      <ProTable columns={columns} request={fetchGoodsList} rowKey="goods_id"></ProTable>
+      <ProTable
+        columns={columns}
+        request={fetchGoodsList}
+        rowKey="goods_id"
+        search={{ span: 6 }}
+        headerTitle="商品列表"
+      ></ProTable>
     </PageContainer>
   );
 };
