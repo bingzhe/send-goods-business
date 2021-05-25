@@ -3,8 +3,8 @@ import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
 import { getGoodsList } from '../../services/api';
-import { Select } from 'antd';
-import { useModel } from 'umi';
+import { Button, Select } from 'antd';
+import { useModel, history } from 'umi';
 
 async function fetchGoodsList(params: any) {
   const { current, pageSize, ...rest } = params;
@@ -101,6 +101,20 @@ const GoodsList: React.FC = () => {
       dataIndex: 'color_name',
       hideInTable: true,
     },
+    {
+      title: '操作',
+      valueType: 'option',
+      render: () => {
+        const handleOrderClick: React.MouseEventHandler = () => {
+          history.push('/welcome');
+        };
+        return (
+          <Button key="primary" type="primary" onClick={handleOrderClick}>
+            下单
+          </Button>
+        );
+      },
+    },
   ];
 
   return (
@@ -111,6 +125,17 @@ const GoodsList: React.FC = () => {
         rowKey="goods_id"
         search={{ span: 6 }}
         headerTitle="商品列表"
+        toolbar={{
+          actions: [
+            <Button key="primary" type="primary">
+              检查商品
+            </Button>,
+            <Button key="primary" type="primary">
+              导出商品
+            </Button>,
+          ],
+          // settings: [],
+        }}
       ></ProTable>
     </PageContainer>
   );
